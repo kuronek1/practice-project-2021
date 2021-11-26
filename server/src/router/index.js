@@ -9,6 +9,11 @@ const chatController = require('../controllers/chatController');
 const upload = require('../utils/fileUpload');
 const router = express.Router();
 
+// TODO:refactor http methods
+// TODO:add routes
+
+
+/* Auth */
 router.post(
   '/registration',
   validators.validateRegistrationData,
@@ -22,6 +27,7 @@ router.post(
   userController.login,
 );
 
+/* Contests */
 router.post(
   '/dataForContest',
   checkToken.checkToken,
@@ -58,11 +64,6 @@ router.post(
   contestController.getContests,
 );
 
-router.post(
-  '/getUser',
-  checkToken.checkAuth,
-);
-
 router.get(
   '/downloadFile/:fileName',
   checkToken.checkToken,
@@ -76,6 +77,7 @@ router.post(
   contestController.updateContest,
 );
 
+/* Offer */
 router.post(
   '/setNewOffer',
   checkToken.checkToken,
@@ -98,6 +100,12 @@ router.post(
   userController.changeMark,
 );
 
+/* User */
+router.post(
+  '/getUser',
+  checkToken.checkAuth,
+);
+
 router.post(
   '/updateUser',
   checkToken.checkToken,
@@ -112,6 +120,7 @@ router.post(
   userController.cashout,
 );
 
+/* Chat */
 router.post(
   '/newMessage',
   checkToken.checkToken,
@@ -142,6 +151,7 @@ router.post(
   chatController.favoriteChat,
 );
 
+/* Catalog */
 router.post(
   '/createCatalog',
   checkToken.checkToken,
