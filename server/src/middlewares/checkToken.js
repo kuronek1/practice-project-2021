@@ -1,12 +1,15 @@
 const jwt = require('jsonwebtoken');
 const CONSTANTS = require('../constants');
 const TokenError = require('../errors/TokenError');
-const userQueries =require('../controllers/queries/userQueries');
+const userQueries = require('../controllers/queries/userQueries');
 
 module.exports.checkAuth = async (req, res, next) => {
-  const accessToken = req.headers.authorization;
+  if (!req.headers.authorization) {
+    return next(new TokenError('Need token'));
+  }
+  const [type, accessToken] = req.headers.authorization.split(' ');
   /* TODO Bearer type */
-  if (!accessToken) {
+  if (type !== 'Bearer' || !accessToken) {
     return next(new TokenError('Need token'));
   }
   try {
@@ -28,9 +31,12 @@ module.exports.checkAuth = async (req, res, next) => {
 };
 
 module.exports.checkToken = async (req, res, next) => {
-  const accessToken = req.headers.authorization;
+  if (!req.headers.authorization) {
+    return next(new TokenError('Need token'));
+  }
+  const [type, accessToken] = req.headers.authorization.split(' ');
   /* TODO Bearer type */
-  if (!accessToken) {
+  if (type !== 'Bearer' || !accessToken) {
     return next(new TokenError('Need token'));
   }
   try {
