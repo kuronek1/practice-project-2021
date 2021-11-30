@@ -5,11 +5,12 @@ const userQueries =require('../controllers/queries/userQueries');
 
 module.exports.checkAuth = async (req, res, next) => {
   const accessToken = req.headers.authorization;
+  /* TODO Bearer type */
   if (!accessToken) {
-    return next(new TokenError('need token'));
+    return next(new TokenError('Need token'));
   }
   try {
-    const tokenData = jwt.verify(accessToken, CONSTANTS.JWT_SECRET);
+    const tokenData = jwt.verify(accessToken, CONSTANTS.JWT_ACCESS_SECRET);
     const foundUser = await userQueries.findUser({ id: tokenData.userId });
     res.send({
       firstName: foundUser.firstName,
@@ -28,11 +29,12 @@ module.exports.checkAuth = async (req, res, next) => {
 
 module.exports.checkToken = async (req, res, next) => {
   const accessToken = req.headers.authorization;
+  /* TODO Bearer type */
   if (!accessToken) {
-    return next(new TokenError('need token'));
+    return next(new TokenError('Need token'));
   }
   try {
-    req.tokenData = jwt.verify(accessToken, CONSTANTS.JWT_SECRET);
+    req.tokenData = jwt.verify(accessToken, CONSTANTS.JWT_ACCESS_SECRET);
     next();
   } catch (err) {
     next(new TokenError());

@@ -7,20 +7,23 @@ const instance = axios.create({
 });
 
 instance.interceptors.request.use((config) => {
-  const token = window.localStorage.getItem(CONTANTS.ACCESS_TOKEN);
-  if (token) {
-    config.headers = { ...config.headers, Authorization: token };
+  const accessToken = window.localStorage.getItem(CONTANTS.ACCESS_TOKEN);
+
+  if (accessToken) {
+    config.headers = { ...config.headers, Authorization: accessToken };
   }
   return config;
 }, (err) => Promise.reject(err));
 
 instance.interceptors.response.use((response) => {
-  if (response.data.token) {
-    window.localStorage.setItem(CONTANTS.ACCESS_TOKEN, response.data.token);
+  if (response.data.tokenPair) {
+    window.localStorage.setItem(CONTANTS.ACCESS_TOKEN, response.data.tokenPair.accessToken);
+    window.localStorage.setItem(CONTANTS.REFRESH_TOKEN, response.data.tokenPair.refreshToken);
   }
   return response;
 }, (err) => {
   if (err.response.status === 408 && history.location.pathname !== '/login' && history.location.pathname !== '/registration' && history.location.pathname !== '/') {
+    console.log('not authorized');
     history.replace('/login');
   }
   return Promise.reject(err);

@@ -1,5 +1,5 @@
 module.exports = {
-  JWT_SECRET: 'asdasdasd4as5d4as8d7a8sd4as65d4a8sd7asd4as56d4',
+  JWT_ACCESS_SECRET: 'asdasdasd4as5d4as8d7a8sd4as65d4a8sd7asd4as56d4',
   JWT_REFRESH_SECRET: 'asdasdasd4as5d4as8d7a8sd4as65d4a8sd7asd4as56d4',
   ACCESS_TOKEN_TIME: 5 * 60,
   REFRESH_TOKEN_TIME: 60 * 60 * 24 * 1,

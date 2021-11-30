@@ -23,17 +23,32 @@ module.exports.login = async (req, res, next) => {
       balance: foundUser.balance,
       email: foundUser.email,
       rating: foundUser.rating,
-    }, CONSTANTS.JWT_SECRET, { expiresIn: CONSTANTS.ACCESS_TOKEN_TIME });
+    }, CONSTANTS.JWT_ACCESS_SECRET, { expiresIn: CONSTANTS.ACCESS_TOKEN_TIME });
+
+    const refreshToken = jwt.sign({
+      firstName: foundUser.firstName,
+      userId: foundUser.id,
+      role: foundUser.role,
+      lastName: foundUser.lastName,
+      avatar: foundUser.avatar,
+      displayName: foundUser.displayName,
+      balance: foundUser.balance,
+      email: foundUser.email,
+      rating: foundUser.rating,
+    }, CONSTANTS.JWT_REFRESH_SECRET, { expiresIn: CONSTANTS.REFRESH_TOKEN_TIME });
+
     await userQueries.updateUser({ accessToken }, foundUser.id);
-    res.send({ token: accessToken });
+    res.send({ tokenPair: { accessToken, refreshToken } });
   } catch (err) {
     next(err);
   }
 };
+
 module.exports.registration = async (req, res, next) => {
   try {
     const newUser = await userQueries.userCreation(
       Object.assign(req.body, { password: req.hashPass }));
+
     const accessToken = jwt.sign({
       firstName: newUser.firstName,
       userId: newUser.id,
@@ -44,9 +59,23 @@ module.exports.registration = async (req, res, next) => {
       balance: newUser.balance,
       email: newUser.email,
       rating: newUser.rating,
-    }, CONSTANTS.JWT_SECRET, { expiresIn: CONSTANTS.ACCESS_TOKEN_TIME });
+    }, CONSTANTS.JWT_ACCESS_SECRET, { expiresIn: CONSTANTS.ACCESS_TOKEN_TIME });
+
+    const refreshToken = jwt.sign({
+      firstName: newUser.firstName,
+      userId: newUser.id,
+      role: newUser.role,
+      lastName: newUser.lastName,
+      avatar: newUser.avatar,
+      displayName: newUser.displayName,
+      balance: newUser.balance,
+      email: newUser.email,
+      rating: newUser.rating,
+    }, CONSTANTS.JWT_REFRESH_SECRET, { expiresIn: CONSTANTS.REFRESH_TOKEN_TIME });
+
+    // Remove access token from user model
     await userQueries.updateUser({ accessToken }, newUser.id);
-    res.send({ token: accessToken });
+    res.send({ tokenPair: { accessToken, refreshToken } });
   } catch (err) {
     if (err.name === 'SequelizeUniqueConstraintError') {
       next(new NotUniqueEmail());
