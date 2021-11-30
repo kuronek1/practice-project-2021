@@ -1,4 +1,3 @@
-const jwt = require('jsonwebtoken');
 const CONSTANTS = require('../constants');
 const bd = require('../models');
 const NotUniqueEmail = require('../errors/NotUniqueEmail');
@@ -8,7 +7,7 @@ const controller = require('../socketInit');
 const userQueries = require('./queries/userQueries');
 const bankQueries = require('./queries/bankQueries');
 const ratingQueries = require('./queries/ratingQueries');
-const { generateTokenPair } = require('../services/jwt.service');
+const { generateTokenPair, saveRefreshToDB } = require('../services/jwt.service');
 
 module.exports.login = async (req, res, next) => {
   try {
@@ -26,7 +25,7 @@ module.exports.login = async (req, res, next) => {
       rating: foundUser.rating,
     });
 
-    await userQueries.updateUser({ accessToken }, foundUser.id);
+    await saveRefreshToDB(refreshToken, foundUser.id);
     res.send({ tokenPair: { accessToken, refreshToken } });
   } catch (err) {
     next(err);
@@ -51,7 +50,7 @@ module.exports.registration = async (req, res, next) => {
     });
 
     // Remove access token from user model
-    await userQueries.updateUser({ accessToken }, newUser.id);
+    await saveRefreshToDB(refreshToken, newUser.id);
     res.send({ tokenPair: { accessToken, refreshToken } });
   } catch (err) {
     if (err.name === 'SequelizeUniqueConstraintError') {

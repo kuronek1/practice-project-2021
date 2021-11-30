@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const { promisify } = require('util');
+const { RefreshToken } = require('../models');
 const CONSTANTS = require('../constants');
 
 const jwtSign = promisify(jwt.sign);
@@ -25,4 +26,14 @@ module.exports.verifyAccessToken = async (token) => {
 
 module.exports.verifyRefreshToken = async (token) => {
   return await jwtVerify(token, CONSTANTS.JWT_REFRESH_SECRET);
+};
+
+module.exports.saveRefreshToDB = async (token, userId) => {
+  /* TODO save multiple refresh tokens*/
+  return await RefreshToken.create({ value: token, userId });
+};
+
+module.exports.updateRefreshToken = async (token, newToken) => {
+  const foundToken = await RefreshToken.findOne({ value: token });
+  return await foundToken.update({ value: newToken });
 };
