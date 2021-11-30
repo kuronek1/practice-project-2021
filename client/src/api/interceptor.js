@@ -36,6 +36,7 @@ instance.interceptors.response.use(
     return response;
   },
   (err) => {
+    // access token expired
     if (
       err.response.status === 408 &&
       history.location.pathname !== '/login' &&
@@ -43,6 +44,18 @@ instance.interceptors.response.use(
       history.location.pathname !== '/'
     ) {
       console.log('not authorized');
+      /* TODO send refresh tokens request */
+    }
+
+    // refresh token expired
+    if (
+      err.response.status === 419 &&
+      history.location.pathname !== '/login' &&
+      history.location.pathname !== '/registration' &&
+      history.location.pathname !== '/'
+    ) {
+      window.localStorage.removeItem(CONTANTS.ACCESS_TOKEN);
+      window.localStorage.removeItem(CONTANTS.REFRESH_TOKEN);
       history.replace('/login');
     }
     return Promise.reject(err);
