@@ -25,7 +25,6 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   (response) => {
     if (response.data.tokenPair) {
-      console.log('new tokens');
       saveTokenPair(response.data.tokenPair);
     }
 
@@ -40,7 +39,6 @@ instance.interceptors.response.use(
       history.location.pathname !== '/'
     ) {
       // send refresh tokens request
-      console.log('access expired');
       const refreshToken = localStorage.getItem(CONSTANTS.REFRESH_TOKEN);
       if (!refreshToken) {
         logoutUser();
@@ -48,12 +46,12 @@ instance.interceptors.response.use(
       }
 
       try {
-        const tokenPair = await resfreshToken({ refreshToken });
-        saveTokenPair(tokenPair);
+        const response = await resfreshToken({ refreshToken });
+        saveTokenPair(response.data.tokenPair);
 
         // do initial request
-        // TODO check
         instance.request(err.config);
+        return
       } catch (error) {
         // refresh token expired
         if (
@@ -63,7 +61,6 @@ instance.interceptors.response.use(
           history.location.pathname !== '/'
         ) {
           /* TODO check saga remove user data */
-          console.log('refresh expired');
 
           logoutUser();
         }

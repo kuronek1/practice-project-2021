@@ -14,7 +14,6 @@ module.exports.checkAuth = async (req, res, next) => {
     return next(new TokenError('Need token'));
   }
   const [type, accessToken] = req.headers.authorization.split(' ');
-  /* TODO Bearer type */
   if (type !== 'Bearer' || !accessToken) {
     return next(new TokenError('Need token'));
   }
@@ -37,7 +36,6 @@ module.exports.checkAccessToken = async (req, res, next) => {
     return next(new TokenError('Need token'));
   }
   const [type, accessToken] = req.headers.authorization.split(' ');
-  /* TODO Bearer type */
   if (type !== 'Bearer' || !accessToken) {
     return next(new TokenError('Need token'));
   }
