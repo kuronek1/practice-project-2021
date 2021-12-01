@@ -28,5 +28,3 @@ module.exports.contestSchem = yup.object().shape({
   typeOfTagline: yup.string().min(1),
   brandStyle: yup.string().min(1),
 });
-
-
