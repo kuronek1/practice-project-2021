@@ -19,6 +19,7 @@
 
     .logo
       align-self: flex-end
+      margin-top: -10px
       @media(max-width: 920px)
         display: none
 
@@ -32,6 +33,7 @@
       font-size: 14px
       font-weight: 400
       margin-bottom: 10px
+      cursor: pointer
 
       &:hover
         color: white
@@ -52,6 +54,13 @@
           display: flex
           justify-content: flex-start
           align-items: center
+          li
+            padding: 0
+            span
+              cursor: pointer
+            a
+              padding: 10px 15px
+              width: 100%
           @media(max-width: 920px)
             padding: 0
           @media(max-width: 700px)
@@ -101,7 +110,6 @@
               li
                 box-sizing: border-box
                 width: 100%
-                padding: 10px 15px
                 display: flex
                 justify-content: flex-start
 
@@ -160,7 +168,7 @@
           ul
             display: block
             position: absolute
-            top: 45px
+            top: 60px
 
         ul
           border: 1px solid #eee
@@ -224,6 +232,11 @@
         color: #337ab7
         font-size: 14px
         margin-left: 10px
+        a
+          text-decoration: none
+          color: inherit
+        a:hover
+          text-decoration: underline
         @media(max-width: 360px)
           font-size: 12px
 

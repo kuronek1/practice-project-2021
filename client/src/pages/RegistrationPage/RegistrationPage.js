@@ -16,14 +16,12 @@ const RegistrationPage = (props) => {
       <div className={styles.signUpContainer}>
         <div className={styles.headerSignUpPage}>
           <Logo src={`${CONSTANTS.STATIC_IMAGES_PATH}logo.png`} />
-          <div className={styles.linkLoginContainer}>
-            <Link
-              to="/login"
-              style={{ textDecoration: 'none' }}
-            >
-              <span>Login</span>
-            </Link>
-          </div>
+          <Link
+            className={styles.linkLoginContainer}
+            to="/login"
+          >
+            <span>Login</span>
+          </Link>
         </div>
         <RegistrationForm history={props.history} />
       </div>

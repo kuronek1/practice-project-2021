@@ -31,13 +31,13 @@
       margin-left: 20px
       cursor: pointer
       top: -15px
-      left: -8px
+      left: -30px
       transition: transform 0.2s ease
-      transform: rotate(150deg)
+      // transform: rotate(-30deg)
 
       &:hover
-        width: 35px
-        height: 35px
+        width: 32px
+        height: 32px
 
     .container
       display: flex
@@ -60,13 +60,18 @@
 
       .notValid
         border: 1px solid red !important
+      .warning
+        position: absolute
+        margin-left: 125px 
+        color: #b72522
+        user-select: none
 
       .input
         height: 20px
         outline: none
         border-radius: 6px
         padding: 6px
-        border: 2px solid #d0d0d0
+        border: 1px solid #d0d0d0
 
         &:focus
           transition: border 0.5s

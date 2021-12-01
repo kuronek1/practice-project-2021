@@ -150,6 +150,7 @@ Brief
                         <span
                           onClick={() => changeContestViewMode(false)}
                           className={classNames(styles.btn, { [styles.activeBtn]: !isBrief })}
+                          style={role === CONSTANTS.CUSTOMER && offers.length < 1 ? {display: 'none'} : {display: 'inline'}}
                         >
 Offer
 </span>

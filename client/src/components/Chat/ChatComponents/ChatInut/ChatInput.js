@@ -33,10 +33,14 @@ const ChatInput = (props) => {
               container: styles.container,
               input: styles.input,
               notValid: styles.notValid,
+              warning: styles.warning,
             }}
           />
           <button type="submit">
-            <img src={`${CONSTANTS.STATIC_IMAGES_PATH}send.png`} alt="send Message" />
+            <img
+              src={`${CONSTANTS.STATIC_IMAGES_PATH}send.png`}
+              alt="send Message"
+            />
           </button>
         </Form>
       </Formik>

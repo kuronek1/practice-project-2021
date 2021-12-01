@@ -30,13 +30,13 @@ class CatalogCreation extends React.Component {
                       <div className={styles.buttonsContainer}>
                         <span
                           onClick={() => changeTypeOfChatAdding(ADD_CHAT_TO_OLD_CATALOG)}
-                          className={classNames({ [styles.active]: catalogCreationMode === ADD_CHAT_TO_OLD_CATALOG })}
+                          className={classNames({ [styles.active]: catalogCreationMode === CREATE_NEW_CATALOG_AND_ADD_CHAT })}
                         >
                           Old
                         </span>
                         <span
                           onClick={() => changeTypeOfChatAdding(CREATE_NEW_CATALOG_AND_ADD_CHAT)}
-                          className={classNames({ [styles.active]: catalogCreationMode === CREATE_NEW_CATALOG_AND_ADD_CHAT })}
+                          className={classNames({ [styles.active]: catalogCreationMode === ADD_CHAT_TO_OLD_CATALOG })}
                         >
                           New
                         </span>
