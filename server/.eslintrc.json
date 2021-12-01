@@ -11,18 +11,18 @@
   },
   "rules": {
     "comma-dangle": [
-      "error",
-      "always-multiline"
+      "warn",
+      "only-multiline"
     ],
     "comma-spacing": [
-      "error",
+      "warn",
       {
         "before": false,
         "after": true
       }
     ],
     "eol-last": [
-      "error",
+      "warn",
       "always"
     ],
     "indent": [
