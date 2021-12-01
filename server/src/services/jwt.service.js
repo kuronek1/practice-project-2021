@@ -1,7 +1,7 @@
 const { promisify } = require('util');
 const jwt = require('jsonwebtoken');
 const _ = require('lodash');
-const { RefreshToken } = require('../models');
+const { RefreshToken, Users: User } = require('../models');
 const CONSTANTS = require('../constants');
 const { prepareUser } = require('../utils/functions');
 
@@ -32,7 +32,6 @@ module.exports.verifyRefreshToken = async (token) => {
 };
 
 const saveRefreshToDB = async (token, userId) => {
-  /* TODO save multiple refresh tokens*/
   return await RefreshToken.create({ value: token, userId });
 };
 module.exports.saveRefreshToDB = saveRefreshToDB;
@@ -42,12 +41,23 @@ module.exports.createSession = async (data) => {
     prepareUser({ ...data, userId: data.id })
   );
 
-  await saveRefreshToDB(tokenPair.refreshToken, data.id);
+  // const user = User.findOne({ where: { id: data.id } });
+  const tokens = await RefreshToken.count({ where: { userId: data.id } });
+
+  // if ((await user.countRefreshTokens()) >= CONSTANTS.MAX_DEVICE_AMOUNT) {
+  if (tokens >= CONSTANTS.MAX_DEVICE_AMOUNT) {
+    /* const [oldestToken] = await user.getRefreshTokens({
+      order: [['updatedAt', 'ASC']],
+    }); */
+    const [oldestToken] = await RefreshToken.findAll({
+      where: { userId: data.id },
+      order: [['updatedAt', 'ASC']],
+    });
+
+    oldestToken.update({ value: tokenPair.refreshToken });
+  } else {
+    await saveRefreshToDB(tokenPair.refreshToken, data.id);
+  }
 
   return tokenPair;
-};
-
-module.exports.updateRefreshToken = async (token, newToken) => {
-  const foundToken = await RefreshToken.findOne({ value: token });
-  return await foundToken.update({ value: newToken });
 };
