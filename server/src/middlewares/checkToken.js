@@ -1,9 +1,15 @@
 const _ = require('lodash');
 const TokenError = require('../errors/TokenError');
+const RefreshTokenError = require('../errors/RefreshTokenError');
 const userQueries = require('../controllers/queries/userQueries');
-const { verifyAccessToken } = require('../services/jwt.service');
+const {
+  verifyAccessToken,
+  verifyRefreshToken,
+} = require('../services/jwt.service');
 
 module.exports.checkAuth = async (req, res, next) => {
+  console.log('accessToken check', req.headers.authorization);
+
   if (!req.headers.authorization) {
     return next(new TokenError('Need token'));
   }
@@ -14,6 +20,7 @@ module.exports.checkAuth = async (req, res, next) => {
   }
   try {
     const tokenData = await verifyAccessToken(accessToken);
+    console.log(tokenData);
     const foundUser = await userQueries.findUser({ id: tokenData.userId });
 
     res.send({
@@ -24,7 +31,8 @@ module.exports.checkAuth = async (req, res, next) => {
   }
 };
 
-module.exports.checkToken = async (req, res, next) => {
+module.exports.checkAccessToken = async (req, res, next) => {
+  console.log('accessToken check', req.headers.authorization);
   if (!req.headers.authorization) {
     return next(new TokenError('Need token'));
   }
@@ -34,9 +42,24 @@ module.exports.checkToken = async (req, res, next) => {
     return next(new TokenError('Need token'));
   }
   try {
+    console.log('accessToken check');
     req.tokenData = await verifyAccessToken(accessToken);
     next();
   } catch (err) {
     next(new TokenError());
+  }
+};
+
+module.exports.checkRefreshToken = async (req, res, next) => {
+  if (!req.body.refreshToken) {
+    return next(new TokenError('Need token'));
+  }
+  const { refreshToken } = req.body;
+
+  try {
+    req.tokenData = await verifyRefreshToken(refreshToken);
+    next();
+  } catch (err) {
+    next(new RefreshTokenError());
   }
 };

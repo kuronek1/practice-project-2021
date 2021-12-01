@@ -1,14 +1,15 @@
 import axios from 'axios';
-import CONTANTS from '../constants';
+import CONSTANTS from '../constants';
 import history from '../browserHistory';
+import { resfreshToken } from './rest/restController';
 
 const instance = axios.create({
-  baseURL: CONTANTS.BASE_URL,
+  baseURL: CONSTANTS.BASE_URL,
 });
 
 instance.interceptors.request.use(
   (config) => {
-    const accessToken = window.localStorage.getItem(CONTANTS.ACCESS_TOKEN);
+    const accessToken = window.localStorage.getItem(CONSTANTS.ACCESS_TOKEN);
 
     if (accessToken) {
       config.headers = {
@@ -24,42 +25,64 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   (response) => {
     if (response.data.tokenPair) {
-      window.localStorage.setItem(
-        CONTANTS.ACCESS_TOKEN,
-        response.data.tokenPair.accessToken
-      );
-      window.localStorage.setItem(
-        CONTANTS.REFRESH_TOKEN,
-        response.data.tokenPair.refreshToken
-      );
-    }
-    return response;
-  },
-  (err) => {
-    // access token expired
-    if (
-      err.response.status === 408 &&
-      history.location.pathname !== '/login' &&
-      history.location.pathname !== '/registration' &&
-      history.location.pathname !== '/'
-    ) {
-      console.log('not authorized');
-      /* TODO send refresh tokens request */
+      console.log('new tokens');
+      saveTokenPair(response.data.tokenPair);
     }
 
-    // refresh token expired
+    return response;
+  },
+  async (err) => {
+    // access token expired
     if (
-      err.response.status === 419 &&
+      err.response.status === 403 &&
       history.location.pathname !== '/login' &&
       history.location.pathname !== '/registration' &&
       history.location.pathname !== '/'
     ) {
-      window.localStorage.removeItem(CONTANTS.ACCESS_TOKEN);
-      window.localStorage.removeItem(CONTANTS.REFRESH_TOKEN);
-      history.replace('/login');
+      // send refresh tokens request
+      console.log('access expired');
+      const refreshToken = localStorage.getItem(CONSTANTS.REFRESH_TOKEN);
+      if (!refreshToken) {
+        logoutUser();
+        return Promise.reject(err);
+      }
+
+      try {
+        const tokenPair = await resfreshToken({ refreshToken });
+        saveTokenPair(tokenPair);
+
+        // do initial request
+        // TODO check
+        instance.request(err.config);
+      } catch (error) {
+        // refresh token expired
+        if (
+          err.response.status === 419 &&
+          history.location.pathname !== '/login' &&
+          history.location.pathname !== '/registration' &&
+          history.location.pathname !== '/'
+        ) {
+          /* TODO check saga remove user data */
+          console.log('refresh expired');
+
+          logoutUser();
+        }
+      }
     }
+
     return Promise.reject(err);
   }
 );
+
+const saveTokenPair = ({ accessToken, refreshToken }) => {
+  window.localStorage.setItem(CONSTANTS.ACCESS_TOKEN, accessToken);
+  window.localStorage.setItem(CONSTANTS.REFRESH_TOKEN, refreshToken);
+};
+
+const logoutUser = () => {
+  window.localStorage.removeItem(CONSTANTS.ACCESS_TOKEN);
+  window.localStorage.removeItem(CONSTANTS.REFRESH_TOKEN);
+  history.replace('/login');
+};
 
 export default instance;
