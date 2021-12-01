@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const _ = require('lodash');
 const { RefreshToken } = require('../models');
 const CONSTANTS = require('../constants');
+const { prepareUser } = require('../utils/functions');
 
 const jwtSign = promisify(jwt.sign);
 const jwtVerify = promisify(jwt.verify);
@@ -38,7 +39,7 @@ module.exports.saveRefreshToDB = saveRefreshToDB;
 
 module.exports.createSession = async (data) => {
   const tokenPair = await generateTokenPair(
-    _.omit({ ...data, userId: data.id }, ['password'])
+    prepareUser({ ...data, userId: data.id })
   );
 
   await saveRefreshToDB(tokenPair.refreshToken, data.id);
