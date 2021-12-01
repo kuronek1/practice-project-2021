@@ -2,6 +2,7 @@ const express = require('express');
 const basicMiddlewares = require('../middlewares/basicMiddlewares');
 const hashPass = require('../middlewares/hashPassMiddle');
 const userController = require('../controllers/userController');
+const authController = require('../controllers/authController');
 const contestController = require('../controllers/contestController');
 const {
   checkAccessToken,
@@ -21,12 +22,12 @@ router.post(
   '/registration',
   validators.validateRegistrationData,
   hashPass,
-  userController.registration
+  authController.registration
 );
 
-router.post('/login', validators.validateLogin, userController.login);
+router.post('/login', validators.validateLogin, authController.login);
 
-router.put('/refresh', checkRefreshToken, userController.refreshTokens);
+router.put('/refresh', checkRefreshToken, authController.refreshTokens);
 
 /* Contests */
 router.post(

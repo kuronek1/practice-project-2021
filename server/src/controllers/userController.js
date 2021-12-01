@@ -1,62 +1,11 @@
 const { v4: uuid } = require('uuid');
 const moment = require('moment');
-const _ = require('lodash');
-const NotUniqueEmail = require('../errors/NotUniqueEmail');
 const controller = require('../socketInit');
 const userQueries = require('./queries/userQueries');
 const bankQueries = require('./queries/bankQueries');
 const ratingQueries = require('./queries/ratingQueries');
-const { createSession } = require('../services/jwt.service');
 const bd = require('../models');
 const CONSTANTS = require('../constants');
-const TokenError = require('../errors/TokenError');
-
-module.exports.login = async (req, res, next) => {
-  try {
-    const foundUser = await userQueries.findUser({ email: req.body.email });
-    await userQueries.passwordCompare(req.body.password, foundUser.password);
-
-    const tokenPair = await createSession(foundUser);
-
-    res.send({ tokenPair });
-  } catch (err) {
-    next(err);
-  }
-};
-
-module.exports.registration = async (req, res, next) => {
-  try {
-    const newUser = await userQueries.userCreation(
-      Object.assign(req.body, { password: req.hashPass })
-    );
-
-    const tokenPair = await createSession(newUser);
-
-    res.send({ tokenPair });
-  } catch (err) {
-    if (err.name === 'SequelizeUniqueConstraintError') {
-      next(new NotUniqueEmail());
-    } else {
-      next(err);
-    }
-  }
-};
-
-module.exports.refreshTokens = async (req, res, next) => {
-  try {
-    const {
-      tokenData: { userId },
-    } = req;
-
-    const foundUser = await userQueries.findUser({ id: userId });
-
-    const tokenPair = await createSession(foundUser);
-
-    res.status(201).send({ tokenPair });
-  } catch (error) {
-    next(new TokenError());
-  }
-};
 
 function getQuery(offerId, userId, mark, isFirst, transaction) {
   const getCreateQuery = () =>

@@ -24,6 +24,14 @@ export default function (state = initialState, action) {
         data: action.data,
       };
     }
+    case ACTION.AUTH_ACTION_SUCCESS: {
+      return {
+        ...state,
+        isFetching: false,
+        error: null,
+        data: action.payload,
+      };
+    }
     case ACTION.GET_USER_ERROR: {
       return {
         ...state,
