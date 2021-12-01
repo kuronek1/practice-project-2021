@@ -8,8 +8,6 @@ const {
 } = require('../services/jwt.service');
 
 module.exports.checkAuth = async (req, res, next) => {
-  console.log('accessToken check', req.headers.authorization);
-
   if (!req.headers.authorization) {
     return next(new TokenError('Need token'));
   }
@@ -19,7 +17,6 @@ module.exports.checkAuth = async (req, res, next) => {
   }
   try {
     const tokenData = await verifyAccessToken(accessToken);
-    console.log(tokenData);
     const foundUser = await userQueries.findUser({ id: tokenData.userId });
 
     res.send({
@@ -31,7 +28,6 @@ module.exports.checkAuth = async (req, res, next) => {
 };
 
 module.exports.checkAccessToken = async (req, res, next) => {
-  console.log('accessToken check', req.headers.authorization);
   if (!req.headers.authorization) {
     return next(new TokenError('Need token'));
   }
@@ -40,7 +36,6 @@ module.exports.checkAccessToken = async (req, res, next) => {
     return next(new TokenError('Need token'));
   }
   try {
-    console.log('accessToken check');
     req.tokenData = await verifyAccessToken(accessToken);
     next();
   } catch (err) {

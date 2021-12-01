@@ -1,6 +1,5 @@
 const { promisify } = require('util');
 const jwt = require('jsonwebtoken');
-const _ = require('lodash');
 const { RefreshToken, Users: User } = require('../models');
 const CONSTANTS = require('../constants');
 const { prepareUser } = require('../utils/functions');
