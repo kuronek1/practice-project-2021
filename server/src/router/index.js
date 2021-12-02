@@ -27,7 +27,7 @@ router.post(
 
 router.post('/login', validators.validateLogin, authController.login);
 
-router.put('/refresh', checkRefreshToken, authController.refreshTokens);
+router.patch('/refresh', checkRefreshToken, authController.refreshTokens);
 
 /* Contests */
 router.post(

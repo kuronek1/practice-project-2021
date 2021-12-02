@@ -11,7 +11,10 @@ export const loginRequest = async (data) => {
   const response = await http.post('login', data);
   return response.data.data;
 };
-export const resfreshToken = (data) => http.put('/refresh', data);
+export const resfreshToken = async (data) => {
+  const response = await http.patch('refresh', data);
+  return response.data.data;
+};
 
 export const saveTokenPair = ({ accessToken, refreshToken }) => {
   window.localStorage.setItem(CONSTANTS.ACCESS_TOKEN, accessToken);

@@ -45,7 +45,7 @@ module.exports.refreshTokens = async (req, res, next) => {
 
     const tokenPair = await createSession(foundUser);
 
-    res.status(201).send({ tokenPair });
+    res.status(201).send({ tokenPair, data: prepareUser(foundUser) });
   } catch (error) {
     next(new TokenError());
   }
