@@ -19,10 +19,6 @@ const ContestCreationPage = (props) => {
     : { contestType: props.contestType };
 
   const handleSubmit = (values) => {
-    /* Fix server validation failure for "nameVenture" field */
-    if (values.nameVenture === '') {
-      delete values.nameVenture;
-    }
     props.saveContest({ type: props.contestType, info: values });
     const route =
       props.bundleStore.bundle[props.contestType] === 'payment'
