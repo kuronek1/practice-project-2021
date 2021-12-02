@@ -5,9 +5,9 @@ import Logo from '../Logo';
 import styles from './Header.module.sass';
 import CONSTANTS from '../../constants';
 import { clearUserStore } from '../../actions/actionCreator';
+import Avatar from '../Avatar';
 
 class Header extends React.Component {
-
   logOut = () => {
     localStorage.clear();
     this.props.clearUserStore();
@@ -23,14 +23,7 @@ class Header extends React.Component {
       return (
         <>
           <div className={styles.userInfo}>
-            <img
-              src={
-                this.props.data.avatar === 'anon.png'
-                  ? CONSTANTS.ANONYM_IMAGE_PATH
-                  : `${CONSTANTS.publicURL}${this.props.data.avatar}`
-              }
-              alt="user"
-            />
+            <Avatar avatar={this.props.data.avatar} className={styles.avatar} />
             <span>{`Hi, ${this.props.data.displayName}`}</span>
             <img
               src={`${CONSTANTS.STATIC_IMAGES_PATH}menu-down.png`}
