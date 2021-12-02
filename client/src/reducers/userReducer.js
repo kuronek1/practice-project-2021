@@ -1,7 +1,7 @@
 import ACTION from '../actions/actionTypes';
 
 const initialState = {
-  isFetching: false,
+  isFetching: true,
   error: null,
   data: null,
 };
@@ -9,6 +9,14 @@ const initialState = {
 export default function (state = initialState, action) {
   switch (action.type) {
     case ACTION.GET_USER_REQUEST: {
+      return {
+        ...state,
+        isFetching: true,
+        error: null,
+        data: null,
+      };
+    }
+    case ACTION.AUTH_ACTION_REFRESH: {
       return {
         ...state,
         isFetching: true,
