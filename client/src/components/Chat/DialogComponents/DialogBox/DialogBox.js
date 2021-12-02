@@ -2,6 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import styles from './DialogBox.module.sass';
 import CONSTANTS from '../../../../constants';
+import Avatar from '../../../Avatar';
 
 const DialogBox = (props) => {
   const {
@@ -33,10 +34,7 @@ const DialogBox = (props) => {
         },
       })}
     >
-      <img
-        src={interlocutor.avatar === 'anon.png' ? CONSTANTS.ANONYM_IMAGE_PATH : `${CONSTANTS.publicURL}${interlocutor.avatar}`}
-        alt="user"
-      />
+      <Avatar avatar={interlocutor.avatar} />
       <div className={styles.infoContainer}>
         <div className={styles.interlocutorInfo}>
           <span className={styles.interlocutorName}>{interlocutor.firstName}</span>
