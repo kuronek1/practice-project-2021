@@ -12,6 +12,12 @@ export const authActionRegister = (data, history) => ({
   history,
 });
 
+export const authActionRefresh = (data, history) => ({
+  type: ACTION.AUTH_ACTION_REFRESH,
+  data,
+  history,
+});
+
 export const payRequest = (data, history) => ({
   type: ACTION.PAYMENT_ACTION,
   data,

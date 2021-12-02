@@ -7,6 +7,7 @@ const initialState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
+    case ACTION.AUTH_ACTION_REFRESH:
     case ACTION.AUTH_ACTION_REQUEST: {
       return {
         isFetching: true,
