@@ -1,7 +1,7 @@
 import axios from 'axios';
 import CONSTANTS from '../constants';
 import history from '../browserHistory';
-import { resfreshToken } from './rest/restController';
+import * as authController from './rest/authContoller';
 
 const instance = axios.create({
   baseURL: CONSTANTS.BASE_URL,
@@ -25,7 +25,7 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   (response) => {
     if (response.data.tokenPair) {
-      saveTokenPair(response.data.tokenPair);
+      authController.saveTokenPair(response.data.tokenPair);
     }
 
     return response;
@@ -41,17 +41,17 @@ instance.interceptors.response.use(
       // send refresh tokens request
       const refreshToken = localStorage.getItem(CONSTANTS.REFRESH_TOKEN);
       if (!refreshToken) {
-        logoutUser();
+        authController.logoutUser();
         return Promise.reject(err);
       }
 
       try {
-        const response = await resfreshToken({ refreshToken });
-        saveTokenPair(response.data.tokenPair);
+        const response = await authController.resfreshToken({ refreshToken });
+        authController.saveTokenPair(response.data.tokenPair);
 
         // do initial request
         instance.request(err.config);
-        return
+        return;
       } catch (error) {
         // refresh token expired
         if (
@@ -62,7 +62,7 @@ instance.interceptors.response.use(
         ) {
           /* TODO check saga remove user data */
 
-          logoutUser();
+          authController.logoutUser();
         }
       }
     }
@@ -70,16 +70,5 @@ instance.interceptors.response.use(
     return Promise.reject(err);
   }
 );
-
-const saveTokenPair = ({ accessToken, refreshToken }) => {
-  window.localStorage.setItem(CONSTANTS.ACCESS_TOKEN, accessToken);
-  window.localStorage.setItem(CONSTANTS.REFRESH_TOKEN, refreshToken);
-};
-
-const logoutUser = () => {
-  window.localStorage.removeItem(CONSTANTS.ACCESS_TOKEN);
-  window.localStorage.removeItem(CONSTANTS.REFRESH_TOKEN);
-  history.replace('/login');
-};
 
 export default instance;

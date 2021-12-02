@@ -1,14 +1,6 @@
 import http from '../interceptor';
 
-export const registerRequest = async (data) => {
-  const response = await http.post('registration', data);
-  return response.data.data;
-};
-export const loginRequest = async (data) => {
-  const response = await http.post('login', data);
-  return response.data.data;
-};
-export const resfreshToken = (data) => http.put('/refresh', data);
+
 export const getUser = () => http.post('getUser');
 export const updateContest = (data) => http.post('updateContest', data);
 export const setNewOffer = (data) => http.post('setNewOffer', data);

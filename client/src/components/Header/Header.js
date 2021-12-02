@@ -4,14 +4,12 @@ import { Link, withRouter } from 'react-router-dom';
 import Logo from '../Logo';
 import styles from './Header.module.sass';
 import CONSTANTS from '../../constants';
-import { clearUserStore } from '../../actions/actionCreator';
+import * as authController from '../../api/rest/authContoller';
 import Avatar from '../Avatar';
 
 class Header extends React.Component {
   logOut = () => {
-    localStorage.clear();
-    this.props.clearUserStore();
-    this.props.history.replace('/login');
+    authController.logoutUser(this.props.history);
   };
 
   startContests = () => {
@@ -264,8 +262,5 @@ class Header extends React.Component {
 }
 
 const mapStateToProps = (state) => state.userStore;
-const mapDispatchToProps = (dispatch) => ({
-  clearUserStore: () => dispatch(clearUserStore()),
-});
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));
+export default withRouter(connect(mapStateToProps)(Header));
