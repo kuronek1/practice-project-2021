@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Route } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { selectBundle } from '../../actions/actionCreator';
 import BundleBox from '../../components/BundleBox/BundleBox';
 import CONSTANTS from '../../constants';
@@ -10,8 +10,10 @@ import ProgressBar from '../../components/ProgressBar/ProgressBar';
 import Header from '../../components/Header/Header';
 
 const StartContestPage = (props) => {
+  const history = useHistory();
+
   if (props.userStore.data.role !== CONSTANTS.CUSTOMER) {
-    props.history.replace('/');
+    history.replace('/');
   }
 
   const setBundle = (bundleStr) => {
@@ -22,7 +24,7 @@ const StartContestPage = (props) => {
       bundleList[array[i]] = i === array.length - 1 ? 'payment' : array[i + 1];
     }
     props.choseBundle(bundleList);
-    props.history.push(`/startContest/${bundleList.first}Contest`);
+    history.push(`/startContest/${bundleList.first}Contest`);
   };
 
   return (
