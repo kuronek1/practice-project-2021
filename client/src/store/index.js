@@ -7,7 +7,7 @@ import { initSocket } from '../api/ws/socketController';
 
 const sagaMiddleware = createSagaMiddleware();
 
-export default function configureStore() {
+function configureStore() {
   const store = createStore(
     combineReducers,
     composeWithDevTools(applyMiddleware(sagaMiddleware))
@@ -16,3 +16,7 @@ export default function configureStore() {
   initSocket(store);
   return store;
 }
+
+const store = configureStore();
+
+export default store;
