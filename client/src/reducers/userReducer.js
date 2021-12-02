@@ -24,6 +24,9 @@ export default function (state = initialState, action) {
         data: null,
       };
     }
+    case ACTION.AUTH_ACTION_CANCEL: {
+      return { ...state, isFetching: false };
+    }
     case ACTION.GET_USER_SUCCESS: {
       return {
         ...state,

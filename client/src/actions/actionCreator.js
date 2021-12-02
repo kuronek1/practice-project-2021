@@ -18,6 +18,10 @@ export const authActionRefresh = (data, history) => ({
   history,
 });
 
+export const authActionCancel = (data, history) => ({
+  type: ACTION.AUTH_ACTION_CANCEL,
+});
+
 export const payRequest = (data, history) => ({
   type: ACTION.PAYMENT_ACTION,
   data,
