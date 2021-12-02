@@ -1,3 +1,5 @@
+const path = require('path');
+
 module.exports = {
   JWT_ACCESS_SECRET: 'asdasdasd4as5d4as8d7a8sd4as65d4a8sd7asd4as56d4',
   JWT_REFRESH_SECRET: 'asdasdasd4as5d4as8d7a8sd4as65d4a8sd7asd4as56d4',
@@ -23,7 +25,7 @@ module.exports = {
   OFFER_STATUS_PENDING: 'pending',
   OFFER_STATUS_REJECTED: 'rejected',
   OFFER_STATUS_WON: 'won',
-  FILES_PATH: 'public/',
+  FILES_PATH: path.resolve(__dirname, '..', 'public/'),
   SOCKET_CONNECTION: 'connection',
   SOCKET_SUBSCRIBE: 'subscribe',
   SOCKET_UNSUBSCRIBE: 'unsubscribe',
