@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import moment from 'moment';
 import styles from './ContestSideBar.module.sass';
 import CONSTANTS from '../../constants';
+import Avatar from '../Avatar';
 
 const ContestSideBar = (props) => {
   const getTimeStr = () => {
@@ -52,10 +53,7 @@ const ContestSideBar = (props) => {
         <div className={styles.infoCustomerContainer}>
           <span className={styles.labelCustomerInfo}>About Contest Holder</span>
           <div className={styles.customerInfo}>
-            <img
-              src={User.avatar === 'anon.png' ? CONSTANTS.ANONYM_IMAGE_PATH : `${CONSTANTS.publicURL}${User.avatar}`}
-              alt="user"
-            />
+            <Avatar avatar={User.avatar} />
             <div className={styles.customerNameContainer}>
               <span>{`${User.firstName} ${User.lastName}`}</span>
               <span>{User.displayName}</span>
