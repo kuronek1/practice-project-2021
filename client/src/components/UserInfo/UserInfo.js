@@ -4,6 +4,7 @@ import UpdateUserInfoForm from '../UpdateUserInfoForm/UpdateUserInfoForm';
 import { updateUserData, changeEditModeOnUserProfile } from '../../actions/actionCreator';
 import CONSTANTS from '../../constants';
 import styles from './UserInfo.module.sass';
+import Avatar from '../Avatar';
 
 const UserInfo = (props) => {
   const updateUserData = (values) => {
@@ -24,10 +25,9 @@ const UserInfo = (props) => {
       {isEdit ? <UpdateUserInfoForm onSubmit={updateUserData} />
         : (
           <div className={styles.infoContainer}>
-            <img
-              src={avatar === 'anon.png' ? CONSTANTS.ANONYM_IMAGE_PATH : `${CONSTANTS.publicURL}${avatar}`}
+            <Avatar
+              avatar ={avatar}
               className={styles.avatar}
-              alt="user"
             />
             <div className={styles.infoContainer}>
               <div className={styles.infoBlock}>

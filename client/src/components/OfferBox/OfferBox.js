@@ -16,6 +16,7 @@ import CONSTANTS from '../../constants';
 import styles from './OfferBox.module.sass';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import './confirmStyle.css';
+import Avatar from '../Avatar';
 
 const OfferBox = (props) => {
   const findConversationInfo = () => {
@@ -103,10 +104,7 @@ const OfferBox = (props) => {
       <div className={styles.mainInfoContainer}>
         <div className={styles.userInfo}>
           <div className={styles.creativeInfoContainer}>
-            <img
-              src={avatar === 'anon.png' ? CONSTANTS.ANONYM_IMAGE_PATH : `${CONSTANTS.publicURL}${avatar}`}
-              alt="user"
-            />
+          <Avatar avatar={avatar} />
             <div className={styles.nameAndEmail}>
               <span>{`${firstName} ${lastName}`}</span>
               <span>{email}</span>

@@ -6,23 +6,23 @@
     "es6": true
   },
   "parserOptions": {
-    "ecmaVersion": 2017,
+    "ecmaVersion": 2018,
     "sourceType": "module"
   },
   "rules": {
     "comma-dangle": [
-      "error",
-      "always-multiline"
+      "warn",
+      "only-multiline"
     ],
     "comma-spacing": [
-      "error",
+      "warn",
       {
         "before": false,
         "after": true
       }
     ],
     "eol-last": [
-      "error",
+      "warn",
       "always"
     ],
     "indent": [

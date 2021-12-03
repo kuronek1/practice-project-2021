@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
+import Avatar from '../../../Avatar';
 import { backToDialogList, changeChatFavorite, changeChatBlock } from '../../../../actions/actionCreator';
 import styles from './ChatHeader.module.sass';
 import CONSTANTS from '../../../../constants';
@@ -35,10 +36,7 @@ const ChatHeader = (props) => {
       </div>
       <div className={styles.infoContainer}>
         <div>
-          <img
-            src={avatar === 'anon.png' ? CONSTANTS.ANONYM_IMAGE_PATH : `${CONSTANTS.publicURL}${avatar}`}
-            alt="user"
-          />
+          <Avatar avatar={avatar} />
           <span>{firstName}</span>
         </div>
         {chatData
